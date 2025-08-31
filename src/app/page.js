@@ -6,7 +6,8 @@ export default function Home() {
     <div className="relative min-h-screen overflow-hidden">
       <BackgroundScene />
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 sm:px-10">
-        <header className="w-full max-w-6xl flex items-center justify-between py-6">
+        <div className="pointer-events-none absolute inset-0 z-0 bg-black/25" />
+        <header className="relative z-10 w-full max-w-6xl flex items-center justify-between py-6">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-md bg-gradient-to-br from-indigo-500 via-cyan-400 to-emerald-400 shadow-lg shadow-cyan-500/30" />
             <span className="text-lg font-semibold tracking-tight">TripleDev.co</span>
@@ -18,7 +19,7 @@ export default function Home() {
           </nav>
         </header>
 
-        <section className="w-full max-w-6xl text-center sm:text-left">
+        <section className="relative z-10 w-full max-w-6xl text-center sm:text-left">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.03em] leading-[1.05]">
             We build blazing-fast web experiences
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-sky-400 to-emerald-300">
@@ -39,7 +40,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="absolute inset-x-0 bottom-0 flex items-center justify-center py-6">
+        <footer className="z-10 absolute inset-x-0 bottom-0 flex items-center justify-center py-6">
           <div className="text-xs text-white/50">© {new Date().getFullYear()} TripleDev.co — All Rights Reserved</div>
         </footer>
       </main>
