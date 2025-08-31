@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen overflow-hidden">
       <BackgroundScene />
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 sm:px-10">
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-start pt-3 px-6 sm:px-10">
         <div className="pointer-events-none absolute inset-0 z-0 bg-black/25" />
         <header className="relative z-10 w-full max-w-6xl flex items-center justify-between py-6">
           <div className="flex items-center gap-3">
@@ -19,7 +19,7 @@ export default function Home() {
           </nav>
         </header>
 
-        <section className="relative z-10 w-full max-w-6xl text-center sm:text-left">
+        <section className="relative z-10 w-full max-w-6xl pt-12 text-center sm:text-left">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.03em] leading-[1.05]">
             We build blazing-fast web experiences
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-sky-400 to-emerald-300">
