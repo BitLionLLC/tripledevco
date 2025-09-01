@@ -9,7 +9,7 @@ export default function Header () {
                     <span className="text-lg font-semibold tracking-tight">TripleDev.co</span>
                 </Link>
                 <nav className="flex items-center gap-6 sm:gap-8 text-sm text-white/80 min-w-12 sm:justify-between">
-                    <Link href="#work" className="hover:text-white transition-colors">Work</Link>
+                    <Link href="/work" className="hover:text-white transition-colors">Work</Link>
                     <Link href="#services" className="hover:text-white transition-colors ml-2">Services</Link>
                     <Link href="#contact" className="hover:text-white transition-colors ml-2">Contact</Link>
                 </nav>
