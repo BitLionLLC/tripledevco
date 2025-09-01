@@ -1,7 +1,7 @@
 import BackgroundScene from "@/components/BackgroundScene";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
-import nodemailer from "nodemailer";
+import { sendContactEmail as sendContactEmailServer } from "@/lib/mailer";
 
 export const runtime = 'nodejs';
 
@@ -17,53 +17,7 @@ async function sendContactEmail(formData) {
   }
 
   try {
-    const host = process.env.SMTP_HOST;
-    const user = process.env.SMTP_USER;
-    const pass = process.env.SMTP_PASS;
-
-    if (!user || !pass) {
-      console.error("Missing SMTP environment variables. Expected SMTP_USER, SMTP_PASS");
-      return redirect("/contact?error=1");
-    }
-
-    const hasHost = Boolean(host);
-    const hasPort = typeof process.env.SMTP_PORT !== 'undefined' && process.env.SMTP_PORT !== '';
-    const hasSecure = typeof process.env.SMTP_SECURE !== 'undefined' && process.env.SMTP_SECURE !== '';
-
-    let transporter;
-    if (hasHost && hasPort && hasSecure) {
-      transporter = nodemailer.createTransport({
-        host,
-        port: parseInt(process.env.SMTP_PORT, 10),
-        secure: process.env.SMTP_SECURE === "true",
-        auth: { user, pass },
-      });
-    } else {
-      const service = process.env.MAIL_SERVICE || "gmail";
-      transporter = nodemailer.createTransport({
-        service,
-        auth: { user, pass },
-      });
-    }
-
-    const toAddress = process.env.MAIL_TO || "grant@tripledev.co";
-    const fromAddress = process.env.MAIL_FROM || user;
-
-    await transporter.sendMail({
-      from: fromAddress,
-      to: toAddress,
-      replyTo: email,
-      subject: `New contact from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-      html: `
-        <div>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Message:</strong></p>
-          <pre style="white-space:pre-wrap;font-family:inherit">${message}</pre>
-        </div>
-      `,
-    });
+    await sendContactEmailServer(name, email, message);
   } catch (error) {
     console.error("Failed to send contact email:", error);
     return redirect("/contact?error=1");
