@@ -83,7 +83,7 @@ export default async function ContactPage({ searchParams }) {
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-start pt-3 px-6 sm:px-10">
         <div className="pointer-events-none absolute inset-0 z-0 bg-black/25" />
 
-        <section className="relative z-10 w-full max-w-2xl py-12 bg-black/25 p-6 rounded-2xl">
+        <section className="relative z-10 w-full max-w-2xl py-12 rounded-2xl border border-white/10 bg-black/30 backdrop-blur-sm p-6">
           <h1 className="text-3xl sm:text-5xl font-semibold tracking-[-0.03em]">Contact</h1>
           <p className="mt-3 text-white/70">Tell us a bit about your project and how to reach you.</p>
 

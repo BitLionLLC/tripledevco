@@ -11,27 +11,29 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-0 z-0 bg-black/25" />
         
 
-        <section className="relative z-10 w-full max-w-6xl pt-12 text-center sm:text-left">
+        <section className="relative z-10 w-full max-w-6xl mt-12 pt-12 text-center sm:text-left bg-black/30 backdrop-blur-sm border-white/10 border rounded-2xl p-6">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.03em] leading-[1.05]">
             We build blazing-fast web experiences
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-sky-400 to-emerald-300">
               for ambitious brands.
             </span>
           </h1>
-          <p className="mt-6 max-w-2xl text-white/70 text-balance">
-            TripleDev ships modern, high-performance apps and sites with pixel-perfect design,
-            clean code, and performance you can feel.
-          </p>
-          <p className="mt-6 max-w-2xl text-white/70 text-balance">
-            We specialize in React, Next, TypeScript, Node, FastAPI, MongoDB, Supabase, Flutter, and integration with OpenAI and Anthropic APIs
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Link href="/schedule" className="inline-flex items-center justify-center rounded-md bg-white text-black px-6 py-3 text-sm font-medium hover:bg-white/90 transition-colors">
-              Start a project
-            </Link>
-            <Link href="/work" className="inline-flex items-center justify-center rounded-md border border-white/20 px-6 py-3 text-sm font-medium text-white/90 hover:bg-white/10 transition-colors">
-              See our work
-            </Link>
+          <div className="mt-6 sm:mt-8 inline-block text-left rounded-2xl">
+            <p className="max-w-2xl text-white/70 text-balance">
+              TripleDev ships modern, high-performance apps and sites with pixel-perfect design,
+              clean code, and performance you can feel.
+            </p>
+            <p className="mt-6 max-w-2xl text-white/70 text-balance">
+              We specialize in React, Next, TypeScript, Node, FastAPI, MongoDB, Supabase, Flutter, and integration with OpenAI and Anthropic APIs
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <Link href="/schedule" className="inline-flex items-center justify-center rounded-md bg-white text-black px-6 py-3 text-sm font-medium hover:bg-white/90 transition-colors">
+                Start a project
+              </Link>
+              <Link href="/work" className="inline-flex items-center justify-center rounded-md border border-white/20 px-6 py-3 text-sm font-medium text-white/90 hover:bg-white/10 transition-colors">
+                See our work
+              </Link>
+            </div>
           </div>
         </section>
 
