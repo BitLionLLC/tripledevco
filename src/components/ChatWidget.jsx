@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,6 +83,44 @@ export default function ChatWidget() {
     }
   }
 
+  function renderMessageContent(text) {
+    let nodes = [];
+    let index = 0;
+    const regex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|((^|\s+)(\/[a-zA-Z0-9\/_-]+))/g;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      const matchStart = match.index;
+      if (matchStart > lastIndex) {
+        const segment = text.slice(lastIndex, matchStart);
+        nodes.push(<span key={`t-${index++}`}>{segment}</span>);
+      }
+      if (match[1]) {
+        const email = match[1];
+        nodes.push(
+          <a key={`e-${index++}`} href={`mailto:${email}`} className="underline underline-offset-2 text-blue-400">
+            {email}
+          </a>
+        );
+      } else if (match[4]) {
+        const before = match[3] || '';
+        const path = match[4];
+        if (before) nodes.push(<span key={`ws-${index++}`}>{before}</span>);
+        nodes.push(
+          <Link key={`l-${index++}`} href={path} className="underline underline-offset-2 text-blue-400">
+            {path}
+          </Link>
+        );
+      }
+      lastIndex = regex.lastIndex;
+    }
+    if (lastIndex < text.length) {
+      nodes.push(<span key={`t-${index++}`}>{text.slice(lastIndex)}</span>);
+    }
+    return nodes;
+  }
+
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {!isOpen && (
@@ -129,7 +168,7 @@ export default function ChatWidget() {
                           : 'inline-block max-w-[85%] rounded-2xl bg-white/10 px-3 py-2'
                       }
                     >
-                      {m.content}
+                      {renderMessageContent(m.content)}
                     </div>
                   </div>
                 ))}
