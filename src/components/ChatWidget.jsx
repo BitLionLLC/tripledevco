@@ -135,7 +135,14 @@ export default function ChatWidget() {
                 ))}
                 {isSending && (
                   <div className="text-left">
-                    <div className="inline-block rounded-2xl bg-white/10 px-3 py-2 text-white/70">Thinking…</div>
+                    <div className="inline-block rounded-2xl bg-white/10 px-3 py-2">
+                      <div className="flex items-center gap-1">
+                        <span className="sr-only">Assistant is typing</span>
+                        <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-white/70" style={{ animationDelay: '0ms' }} />
+                        <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-white/70" style={{ animationDelay: '0.2s' }} />
+                        <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-white/70" style={{ animationDelay: '0.4s' }} />
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -202,6 +209,23 @@ export default function ChatWidget() {
           )}
         </div>
       )}
+      <style jsx>{`
+        .chat-typing-dot {
+          display: inline-block;
+          animation: chat-typing-bounce 1.4s infinite ease-in-out both;
+        }
+
+        @keyframes chat-typing-bounce {
+          0%, 80%, 100% {
+            transform: scale(0.4);
+            opacity: 0.4;
+          }
+          40% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 }
