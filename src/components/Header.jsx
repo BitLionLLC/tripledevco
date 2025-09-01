@@ -8,10 +8,10 @@ export default function Header () {
                     <div className="h-9 w-9 rounded-md bg-gradient-to-br from-indigo-500 via-cyan-400 to-emerald-400 shadow-lg shadow-cyan-500/30" />
                     <span className="text-lg font-semibold tracking-tight">TripleDev.co</span>
                 </Link>
-                <nav className="hidden sm:flex items-center gap-6 text-sm text-white/80">
+                <nav className="flex items-center gap-6 sm:gap-8 text-sm text-white/80 min-w-12 sm:justify-between">
                     <Link href="#work" className="hover:text-white transition-colors">Work</Link>
-                    <Link href="#services" className="hover:text-white transition-colors">Services</Link>
-                    <Link href="#contact" className="hover:text-white transition-colors">Contact</Link>
+                    <Link href="#services" className="hover:text-white transition-colors ml-2">Services</Link>
+                    <Link href="#contact" className="hover:text-white transition-colors ml-2">Contact</Link>
                 </nav>
             </header>
         </div>
