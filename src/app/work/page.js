@@ -48,11 +48,13 @@ export default function WorkPage() {
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-start pt-3 px-6 sm:px-10">
         <div className="pointer-events-none absolute inset-0 z-0 bg-black/25" />
 
-        <section className="relative z-10 w-full max-w-7xl py-12">
-          <h1 className="text-3xl sm:text-5xl font-semibold tracking-[-0.03em]">Selected Work</h1>
-          <p className="mt-3 text-white/70 max-w-2xl">A few projects we’ve shipped recently.</p>
+        <section className="relative z-10 w-full max-w-6xl py-12 flex items-center flex-col">
+            <div className="flex flex-col justify-start w-full">
+                <h1 className="text-3xl sm:text-5xl font-semibold tracking-[-0.03em]">Selected Work</h1>
+                <p className="mt-3 text-white/70 max-w-2xl">A few projects we’ve shipped recently.</p>
+            </div>
 
-          <div className="mt-8 flex flex-col gap-8">
+          <div className="mt-8 flex flex-col gap-8 max-w-6xl self-center">
             {projects.map(({ id, title, description, tech, image, link }) => (
               <article key={id} className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-sm overflow-hidden shadow-lg shadow-cyan-500/10">
                 <div className="flex flex-col sm:flex-row">
