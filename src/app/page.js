@@ -23,7 +23,7 @@ export default function Home() {
             clean code, and performance you can feel.
           </p>
           <p className="mt-6 max-w-2xl text-white/70 text-balance">
-            We specialize in React, Next, TypeScript, Node, FastAPI, MongoDB, Supabase, Flutter, and integration with OpenAI and Anthropic API's
+            We specialize in React, Next, TypeScript, Node, FastAPI, MongoDB, Supabase, Flutter, and integration with OpenAI and Anthropic APIs
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <Link href="/schedule" className="inline-flex items-center justify-center rounded-md bg-white text-black px-6 py-3 text-sm font-medium hover:bg-white/90 transition-colors">
