@@ -11,6 +11,7 @@ export default function Header () {
                 <nav className="flex items-center gap-6 sm:gap-8 text-sm text-white/80 min-w-12 sm:justify-between">
                     <Link href="/work" className="hover:text-white transition-colors">Work</Link>
                     <Link href="/services" className="hover:text-white transition-colors ml-2">Services</Link>
+                    <Link href="/schedule" className="hover:text-white transition-colors ml-2">Book a Call</Link>
                     <Link href="/contact" className="hover:text-white transition-colors ml-2">Contact</Link>
                 </nav>
             </header>
