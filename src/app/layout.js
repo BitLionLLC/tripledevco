@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import "./globals.css";
 import ChatWidget from "@/components/ChatWidget";
+import AppProviders from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,8 +23,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased` }>
-        {children}
-        <ChatWidget />
+        <AppProviders>
+          {children}
+          <ChatWidget />
+        </AppProviders>
       </body>
       <GoogleAnalytics gaId="G-Q1L5KVEDEY" />
     </html>

@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,8 @@ export default function ChatWidget() {
   const [isSubmittingContact, setIsSubmittingContact] = useState(false);
   const [contactResult, setContactResult] = useState(null);
   const listRef = useRef(null);
+  const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  const recaptchaScriptProps = useMemo(() => ({ async: true, defer: true }), []);
 
   useEffect(() => {
     if (!listRef.current) return;
@@ -54,33 +57,75 @@ export default function ChatWidget() {
     }
   }
 
-  async function handleContactSubmit() {
-    if (isSubmittingContact) return;
-    const name = contactName.trim();
-    const email = contactEmail.trim();
-    const message = contactMessage.trim();
-    if (!name || !email || !message) {
-      setContactResult({ ok: false, message: 'Please fill in all fields.' });
-      return;
+  function ContactFormInner() {
+    const { executeRecaptcha } = useGoogleReCaptcha();
+    const allValid = contactName.trim() && contactEmail.trim() && contactMessage.trim();
+    async function handleContactSubmit() {
+      if (isSubmittingContact) return;
+      const name = contactName.trim();
+      const email = contactEmail.trim();
+      const message = contactMessage.trim();
+      if (!name || !email || !message) {
+        setContactResult({ ok: false, message: 'Please fill in all fields.' });
+        return;
+      }
+      setIsSubmittingContact(true);
+      setContactResult(null);
+      try {
+        let recaptchaToken = '';
+        if (executeRecaptcha) {
+          recaptchaToken = await executeRecaptcha('chat_contact_submit');
+        }
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message, recaptchaToken, recaptchaAction: 'chat_contact_submit' }),
+        });
+        if (!res.ok) throw new Error('Failed');
+        setContactResult({ ok: true, message: "Thanks! We'll be in touch soon." });
+        setContactName('');
+        setContactEmail('');
+        setContactMessage('');
+      } catch (e) {
+        setContactResult({ ok: false, message: 'Something went wrong. Please try again later.' });
+      } finally {
+        setIsSubmittingContact(false);
+      }
     }
-    setIsSubmittingContact(true);
-    setContactResult(null);
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
-      });
-      if (!res.ok) throw new Error('Failed');
-      setContactResult({ ok: true, message: "Thanks! We'll be in touch soon." });
-      setContactName('');
-      setContactEmail('');
-      setContactMessage('');
-    } catch (e) {
-      setContactResult({ ok: false, message: 'Something went wrong. Please try again later.' });
-    } finally {
-      setIsSubmittingContact(false);
-    }
+    return (
+      <>
+        <input
+          type="text"
+          value={contactName}
+          onChange={(e) => setContactName(e.target.value)}
+          placeholder="Your name"
+          className="w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
+        />
+        <input
+          type="email"
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
+          placeholder="you@company.com"
+          className="w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
+        />
+        <textarea
+          rows={5}
+          value={contactMessage}
+          onChange={(e) => setContactMessage(e.target.value)}
+          placeholder="What are you building?"
+          className="flex-1 resize-none rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
+        />
+        <div className="flex justify-end">
+          <button
+            onClick={handleContactSubmit}
+            disabled={isSubmittingContact || !allValid}
+            className="inline-flex items-center justify-center rounded-md bg-white text-black px-4 py-2 text-sm font-medium disabled:opacity-50"
+          >
+            {isSubmittingContact ? 'Sending…' : 'Send message'}
+          </button>
+        </div>
+      </>
+    );
   }
 
   function renderMessageContent(text) {
@@ -138,14 +183,14 @@ export default function ChatWidget() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <div className="text-sm font-medium">TripleDev Assistant</div>
             <div className="flex items-center gap-2">
-              <button
+              {/* <button
                 className={`text-xs px-2 py-1 rounded ${!isContactMode ? 'bg-white text-black' : 'bg-white/10 text-white'}`}
                 onClick={() => setIsContactMode(false)}
               >Chat</button>
               <button
                 className={`text-xs px-2 py-1 rounded ${isContactMode ? 'bg-white text-black' : 'bg-white/10 text-white'}`}
                 onClick={() => setIsContactMode(true)}
-              >Contact</button>
+              >Contact</button> */}
               <button
                 className="text-white/60 hover:text-white text-sm ml-1"
                 onClick={() => setIsOpen(false)}
@@ -207,45 +252,16 @@ export default function ChatWidget() {
             </>
           )}
 
-          {isContactMode && (
+          {/* {isContactMode && (
             <div className="h-[24.5rem] p-4 flex flex-col gap-3">
               {contactResult && (
                 <div className={`text-sm px-3 py-2 rounded ${contactResult.ok ? 'bg-emerald-400/10 text-emerald-200 border border-emerald-400/30' : 'bg-red-400/10 text-red-200 border border-red-400/30'}`}>
                   {contactResult.message}
                 </div>
               )}
-              <input
-                type="text"
-                value={contactName}
-                onChange={(e) => setContactName(e.target.value)}
-                placeholder="Your name"
-                className="w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
-              />
-              <input
-                type="email"
-                value={contactEmail}
-                onChange={(e) => setContactEmail(e.target.value)}
-                placeholder="you@company.com"
-                className="w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
-              />
-              <textarea
-                rows={5}
-                value={contactMessage}
-                onChange={(e) => setContactMessage(e.target.value)}
-                placeholder="What are you building?"
-                className="flex-1 resize-none rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
-              />
-              <div className="flex justify-end">
-                <button
-                  onClick={handleContactSubmit}
-                  disabled={isSubmittingContact}
-                  className="inline-flex items-center justify-center rounded-md bg-white text-black px-4 py-2 text-sm font-medium disabled:opacity-50"
-                >
-                  {isSubmittingContact ? 'Sending…' : 'Send message'}
-                </button>
-              </div>
+              <ContactFormInner />
             </div>
-          )}
+          )} */}
         </div>
       )}
       <style jsx>{`

@@ -2,6 +2,7 @@ import BackgroundScene from "@/components/BackgroundScene";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 import { sendContactEmail as sendContactEmailServer } from "@/lib/mailer";
+import ContactForm from "./ContactForm";
 
 export const runtime = 'nodejs';
 
@@ -52,28 +53,9 @@ export default async function ContactPage({ searchParams }) {
             </div>
           )}
 
-          <form action={sendContactEmail} className="mt-8 flex flex-col gap-4">
-            <div>
-              <label htmlFor="name" className="block text-sm text-white/80">Name</label>
-              <input id="name" name="name" type="text" required
-                className="mt-2 w-full rounded-md border border-white/15 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60" placeholder="Your name" />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm text-white/80">Email</label>
-              <input id="email" name="email" type="email" required
-                className="mt-2 w-full rounded-md border border-white/15 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60" placeholder="you@company.com" />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-sm text-white/80">Message</label>
-              <textarea id="message" name="message" rows={6} required
-                className="mt-2 w-full rounded-md border border-white/15 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/60" placeholder="What are you building?" />
-            </div>
-            <div className="flex justify-end">
-              <button type="submit" className="inline-flex items-center justify-center rounded-md bg-white text-black px-6 py-3 text-sm font-medium hover:bg-white/90 transition-colors">
-                Send message
-              </button>
-            </div>
-          </form>
+          <div className="mt-8">
+            <ContactForm />
+          </div>
         </section>
       </main>
     </div>
